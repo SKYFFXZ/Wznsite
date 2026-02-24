@@ -1,35 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WZN DEV - Login</title>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { width: 320px; padding: 25px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center; box-shadow: 0 0 15px #ff0000; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 14px; background: #220000; color: white; border: 2px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1 style="color: #ff0000;">WZN LOGIN</h1>
-        <input type="email" id="logEmail" placeholder="E-mail">
-        <input type="password" id="logSenha" placeholder="Senha">
-        <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" style="margin: 15px 0; display: flex; justify-content: center;"></div>
-        <button class="btn" onclick="verificarLogin()">ENTRAR</button>
-        <p style="margin-top: 15px;"><a href="registro.html" style="color: #ff0000; text-decoration: none; font-size: 0.8em;">Não tem conta? Registre-se</a></p>
-    </div>
+<head><meta charset="UTF-8"><title>WZN DEV</title></head>
+<body style="background: #0a0a0a;">
     <script>
-        function verificarLogin() {
-            const e = document.getElementById('logEmail').value;
-            const s = document.getElementById('logSenha').value;
-            if(e === localStorage.getItem('userEmail') && s === localStorage.getItem('userSenha')) {
-                localStorage.setItem('wzn_logado', 'true');
-                window.location.href = "painel.html"; 
-            } else { alert("Dados incorretos!"); }
-        }
+        const registrado = localStorage.getItem('userEmail');
+        const logado = localStorage.getItem('wzn_logado');
+        // Redireciona para o nome completo do arquivo para evitar erro 404
+        if (!registrado) { window.location.href = "registro.html"; }
+        else if (logado !== 'true') { window.location.href = "login.html"; }
+        else { window.location.href = "painel.html"; }
     </script>
     <script src="https://pl28781040.effectivegatecpm.com/e1/e5/ce/e1e5ce5c5e7479ff86c62d035abda4e5.js"></script>
 </body>
