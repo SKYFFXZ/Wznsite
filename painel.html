@@ -1,28 +1,101 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <script>
-        if (localStorage.getItem('wzn_logado') !== 'true') { window.location.href = "login.html"; }
-    </script>
     <meta charset="UTF-8">
-    <title>WZN DEV | Downloads</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WZN DEV - Painel</title>
     <style>
-        :root { --primary-red: #ff0000; }
-        body { background-color: #0a0a0a; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 90%; max-width: 500px; margin-top: 50px; padding: 20px; background: #150505; border: 3px solid; border-radius: 15px; animation: rgb-border 3s linear infinite; text-align: center; }
-        @keyframes rgb-border { 0% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; } 50% { border-color: #8b0000; box-shadow: 0 0 20px #8b0000; } 100% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; } }
-        .btn { display: block; width: 100%; padding: 15px; margin: 15px 0; background: #220000; color: white; text-decoration: none; border: 2px solid var(--primary-red); border-radius: 8px; font-weight: bold; transition: 0.3s; box-sizing: border-box; }
+        body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .container { width: 100%; max-width: 400px; background: #150505; border: 2px solid #ff0000; border-radius: 15px; padding: 20px; box-shadow: 0 0 20px #ff0000; position: relative; }
+        h1 { color: #ff0000; text-align: center; text-shadow: 0 0 10px #ff0000; font-size: 22px; }
+        .section-title { color: #ff0000; font-weight: bold; margin: 25px 0 15px 0; text-align: center; border-bottom: 1px dashed #ff0000; padding-bottom: 5px; }
+        
+        .btn { width: 100%; padding: 12px; background: #220000; color: white; border: 1px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: block; text-decoration: none; text-align: center; box-sizing: border-box; }
+        .btn:active { background: #ff0000; color: black; }
+        
+        /* Seletor de Idioma */
+        .lang-switcher { position: absolute; top: 10px; right: 10px; background: #000; border: 1px solid #ff0000; color: white; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 11px; }
+        
+        #notification-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; width: 90%; max-width: 300px; }
+        .notification { background: rgba(255, 0, 0, 0.9); color: white; padding: 12px; border-radius: 8px; border: 1px solid #ff0000; text-align: center; font-weight: bold; animation: fadeInOut 3s forwards; }
+        @keyframes fadeInOut { 0% { opacity: 0; transform: translateY(-20px); } 15% { opacity: 1; transform: translateY(0); } 85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-20px); } }
+        
+        .rtl { direction: rtl; }
+        .rtl .lang-switcher { right: auto; left: 10px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 style="color: var(--primary-red);">WZN DEV</h1>
-        <p style="letter-spacing: 4px;">- - INJECTOR - -</p>
-        <a href="https://wa.me/77981259046" target="_blank" class="btn" style="border-color: #ffd700;">GET KEY (PREMIUM)</a>
-        <a href="#" class="btn">GET KEY (FREE)</a>
-        <div style="margin-top: 30px; color: #666; font-size: 0.8em;">- - ROBLOX SCRIPTS - -</div>
-        <a href="#" class="btn">DELTA EXECUTOR</a>
+    <div id="notification-container"></div>
+
+    <div class="container" id="panel-container">
+        <select class="lang-switcher" onchange="changeLang(this.value)">
+            <option value="pt">PT-BR</option>
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+        </select>
+
+        <h1 id="txt-main-title">WZN EXECUTOR</h1>
+
+        <div class="section-title">---- INJECTOR ----</div>
+        <button class="btn" onclick="soon()">DELTA EXECUTOR <span class="soon-txt">(EM BREVE...)</span></button>
+        <button class="btn" onclick="soon()">WZN INJECTOR <span class="soon-txt">(EM BREVE...)</span></button>
+        
+        <a href="https://www.mediafire.com/file/0iv6vdyiwi5656n/Delta-2.708.890.apk/file" target="_blank" class="btn">DELTA EXECUTOR (APK)</a>
+
+        <div class="section-title">---- ROBLOX SCRIPTS ----</div>
+        <a href="https://alpharede.com/ZdzldVJYzoV" target="_blank" class="btn">NAME LASS (STEAL A BRAINROT)</a>
+        <a href="https://alpharede.com/HrhRy9mwns1" target="_blank" class="btn">REDZ HUB (BLOX FRUITS)</a>
+        <a href="https://alpharede.com/OXGZdq7EQxc" target="_blank" class="btn">REDZ HUB (MEME SEA)</a>
+        <a href="https://alpharede.com/i53JSQiRIfa" target="_blank" class="btn">REDZ HUB (BLADE BALL)</a>
+        <a href="https://alpharede.com/W2o87CFBu3B" target="_blank" class="btn">REDZ HUB (PET SIMULATOR)</a>
+        <a href="https://alpharede.com/iTSlppZfNrG" target="_blank" class="btn">VOIDWARE (99 NIGHTS)</a>
+        <a href="https://alpharede.com/zRtx4f0YRPm" target="_blank" class="btn">H4X (99 NIGHTS KEY)</a>
+
+        <button class="btn" style="margin-top: 20px; background: #000;" onclick="logout()">LOGOUT</button>
     </div>
-    <script src="https://pl28781040.effectivegatecpm.com/e1/e5/ce/e1e5ce5c5e7479ff86c62d035abda4e5.js"></script>
+
+    <script>
+        const translations = {
+            pt: { soon: "(EM BREVE...)", toast: "EM BREVE...", rtl: false },
+            en: { soon: "(SOON...)", toast: "COMING SOON...", rtl: false },
+            ar: { soon: "(قريباً...)", toast: "قريباً جداً...", rtl: true }
+        };
+
+        let currentLang = 'pt';
+
+        function changeLang(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            const soonElements = document.querySelectorAll('.soon-txt');
+            
+            soonElements.forEach(el => el.innerText = t.soon);
+            
+            const container = document.getElementById('panel-container');
+            t.rtl ? container.classList.add('rtl') : container.classList.remove('rtl');
+        }
+
+        function notify(msg) {
+            const container = document.getElementById('notification-container');
+            const toast = document.createElement('div');
+            toast.className = 'notification';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function soon() {
+            notify(translations[currentLang].toast);
+        }
+
+        function logout() {
+            localStorage.removeItem('wzn_logado');
+            window.location.href = "login";
+        }
+
+        // Proteção simples: se não estiver logado, volta pro login
+        if (localStorage.getItem('wzn_logado') !== 'true') {
+            window.location.href = "login";
+        }
+    </script>
 </body>
 </html>
