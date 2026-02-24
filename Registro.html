@@ -7,37 +7,29 @@
     <style>
         body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .container { width: 320px; padding: 25px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center; box-shadow: 0 0 15px #ff0000; }
-        .lang-btns { text-align: right; margin-bottom: 10px; }
-        .lang-btns button { background: none; border: 1px solid #ff0000; color: white; cursor: pointer; font-size: 10px; }
-        h1 { color: #ff0000; text-shadow: 0 0 10px #ff0000; }
         input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; }
         .btn { width: 100%; padding: 14px; background: #220000; color: white; border: 2px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="lang-btns"><button onclick="mudarIdioma('pt')">PT</button> <button onclick="mudarIdioma('en')">EN</button></div>
-        <h1 id="txt-titulo">WZN REGISTRO</h1>
+        <h1 style="color: #ff0000;">WZN REGISTRO</h1>
         <input type="text" id="regNome" placeholder="Seu Nome">
         <input type="email" id="regEmail" placeholder="E-mail">
         <input type="password" id="regSenha" placeholder="Senha">
-        <button class="btn" id="txt-btn" onclick="salvarRegistro()">REGISTRAR</button>
-        <p><a href="login.html" id="txt-link" style="color: #666; text-decoration: none; font-size: 0.8em;">Já tem conta? Voltar</a></p>
+        <button class="btn" onclick="salvarRegistro()">REGISTRAR</button>
+        <p><a href="login.html" style="color: #666; text-decoration: none; font-size: 0.8em;">Já tem conta? Login</a></p>
     </div>
     <script>
-        function mudarIdioma(lang) {
-            const t = { pt: { titulo: "WZN REGISTRO", btn: "REGISTRAR", link: "Já tem conta? Voltar" }, en: { titulo: "WZN REGISTER", btn: "REGISTER", link: "Have an account? Back" } };
-            document.getElementById('txt-titulo').innerText = t[lang].titulo;
-            document.getElementById('txt-btn').innerText = t[lang].btn;
-            document.getElementById('txt-link').innerText = t[lang].link;
-            localStorage.setItem('idioma', lang);
-        }
         function salvarRegistro() {
             const e = document.getElementById('regEmail').value;
             const s = document.getElementById('regSenha').value;
-            if(e && s) { localStorage.setItem('userEmail', e); localStorage.setItem('userSenha', s); window.location.href = "login.html"; }
+            if(e && s) { 
+                localStorage.setItem('userEmail', e); 
+                localStorage.setItem('userSenha', s); 
+                window.location.href = "login.html"; 
+            }
         }
-        window.onload = () => { if(localStorage.getItem('idioma')) mudarIdioma(localStorage.getItem('idioma')); };
     </script>
     <script src="https://pl28781040.effectivegatecpm.com/e1/e5/ce/e1e5ce5c5e7479ff86c62d035abda4e5.js"></script>
 </body>
