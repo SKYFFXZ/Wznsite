@@ -4,36 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WZN DEV - Login</title>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client?hl=pt-BR" async defer></script>
     <style>
         body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .container { width: 320px; padding: 25px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center; box-shadow: 0 0 15px #ff0000; }
-        h1 { color: #ff0000; text-shadow: 0 0 10px #ff0000; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; display: block; outline: none; }
-        .btn { width: 100%; padding: 14px; background: #220000; color: white; border: 2px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .container { width: 320px; padding: 25px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center; box-shadow: 0 0 15px #ff0000; position: relative; }
+        h1 { color: #ff0000; text-shadow: 0 0 10px #ff0000; margin-bottom: 20px; font-size: 24px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; outline: none; display: block; }
+        .btn { width: 100%; padding: 14px; background: #220000; color: white; border: 2px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
+        /* Seletor de Idioma */
+        .lang-switcher { position: absolute; top: -45px; right: 0; background: #150505; border: 1px solid #ff0000; color: white; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 12px; }
         
         #notification-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; width: 90%; max-width: 300px; }
-        .notification { background: rgba(255, 0, 0, 0.9); color: white; padding: 12px; border-radius: 8px; border: 1px solid #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); margin-bottom: 10px; text-align: center; font-weight: bold; animation: fadeInOut 3s forwards; }
+        .notification { background: rgba(255, 0, 0, 0.9); color: white; padding: 12px; border-radius: 8px; border: 1px solid #ff0000; text-align: center; font-weight: bold; animation: fadeInOut 3s forwards; }
+        
         @keyframes fadeInOut { 0% { opacity: 0; transform: translateY(-20px); } 15% { opacity: 1; transform: translateY(0); } 85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-20px); } }
+        
+        /* Suporte para Árabe (Direita para Esquerda) */
+        .rtl { direction: rtl; }
+        .rtl .lang-switcher { right: auto; left: 0; }
     </style>
 </head>
 <body>
     <div id="notification-container"></div>
-    <div class="container">
-        <h1>WZN LOGIN</h1>
+    
+    <div class="container" id="main-container">
+        <select class="lang-switcher" onchange="changeLang(this.value)">
+            <option value="pt">PT-BR</option>
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+        </select>
+
+        <h1 id="txt-title">WZN LOGIN</h1>
         <input type="email" id="logEmail" placeholder="E-mail">
         <input type="password" id="logSenha" placeholder="Senha">
-        <button class="btn" onclick="entrar()">ENTRAR</button>
+        <button class="btn" id="txt-btn" onclick="entrar()">ENTRAR</button>
 
         <div style="margin-top: 15px; display: flex; justify-content: center;">
-            <div id="g_id_onload" data-client_id="85362874210-tn6cudv1emn425jdasbsq2kb6v2qrble.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
-            <div class="g_id_signin" data-type="standard"></div>
+            <div id="g_id_onload" 
+                 data-client_id="85362874210-tn6cudv1emn425jdasbsq2kb6v2qrble.apps.googleusercontent.com" 
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-logo_alignment="left" data-locale="pt-BR"></div>
         </div>
 
-        <p style="margin-top: 15px;"><a href="registro" style="color: #ff0000; text-decoration: none; font-size: 0.8em;">Não tem conta? Registre-se</a></p>
+        <p style="margin-top: 15px; font-size: 0.8em;">
+            <a href="registro" id="txt-link" style="color: #666; text-decoration: none;">Não tem conta? Registre-se</a>
+        </p>
     </div>
 
     <script>
+        // Sistema de Tradução
+        const translations = {
+            pt: { title: "WZN LOGIN", email: "E-mail", pass: "Senha", btn: "ENTRAR", link: "Não tem conta? Registre-se", error: "Dados incorretos!", success: "Login realizado!", rtl: false },
+            en: { title: "WZN LOGIN", email: "Email", pass: "Password", btn: "LOGIN", link: "No account? Register", error: "Invalid data!", success: "Login successful!", rtl: false },
+            ar: { title: "WZN تسجيل الدخول", email: "البريد الإلكتروني", pass: "كلمة المرور", btn: "دخول", link: "ليس لديك حساب؟ سجل الآن", error: "بيانات خاطئة!", success: "تم تسجيل الدخول!", rtl: true }
+        };
+
+        let currentLang = 'pt';
+
+        function changeLang(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('logEmail').placeholder = t.email;
+            document.getElementById('logSenha').placeholder = t.pass;
+            document.getElementById('txt-btn').innerText = t.btn;
+            document.getElementById('txt-link').innerText = t.link;
+            
+            const container = document.getElementById('main-container');
+            if(t.rtl) {
+                container.classList.add('rtl');
+            } else {
+                container.classList.remove('rtl');
+            }
+        }
+
         function notify(msg) {
             const container = document.getElementById('notification-container');
             const toast = document.createElement('div');
@@ -46,19 +93,21 @@
         function entrar() {
             const e = document.getElementById('logEmail').value;
             const s = document.getElementById('logSenha').value;
+            // Verifica no LocalStorage (enquanto o banco de dados Supabase é configurado)
             if(e === localStorage.getItem('userEmail') && s === localStorage.getItem('userSenha')) {
                 localStorage.setItem('wzn_logado', 'true');
-                notify("Login realizado!");
+                notify(translations[currentLang].success);
                 setTimeout(() => window.location.href = "painel", 1500);
-            } else { notify("Dados incorretos!"); }
+            } else { 
+                notify(translations[currentLang].error); 
+            }
         }
 
         function handleCredentialResponse(response) {
-            notify("Login Google realizado!");
+            notify(translations[currentLang].success);
             localStorage.setItem('wzn_logado', 'true');
             setTimeout(() => window.location.href = "painel", 1500);
         }
     </script>
-    <script src="https://pl28781040.effectivegatecpm.com/e1/e5/ce/e1e5ce5c5e7479ff86c62d035abda4e5.js"></script>
 </body>
 </html>
