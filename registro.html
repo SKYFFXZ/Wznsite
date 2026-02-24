@@ -4,31 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WZN DEV - Registro</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .container { width: 320px; padding: 25px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center; box-shadow: 0 0 15px #ff0000; }
-        h1 { color: #ff0000; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 14px; background: #220000; color: white; border: 2px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        h1 { color: #ff0000; text-shadow: 0 0 10px #ff0000; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; outline: none; }
+        .btn { width: 100%; padding: 14px; background: #220000; color: white; border: 2px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .google-btn { margin-top: 15px; display: flex; justify-content: center; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>WZN REGISTRO</h1>
+        <input type="text" id="regNome" placeholder="Seu Nome">
         <input type="email" id="regEmail" placeholder="E-mail">
         <input type="password" id="regSenha" placeholder="Senha">
-        <button class="btn" onclick="salvar()">REGISTRAR</button>
-        <p><a href="login.html" style="color: #666; text-decoration: none; font-size: 0.8em;">Já tem conta? Login</a></p>
+        <button class="btn" onclick="salvarRegistro()">CRIAR CONTA</button>
+
+        <div class="google-btn">
+            <div id="g_id_onload" data-client_id="SEU_ID_GOOGLE.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
+            <div class="g_id_signin" data-type="standard"></div>
+        </div>
+
+        <p style="margin-top: 15px; font-size: 0.8em;"><a href="login" style="color: #666; text-decoration: none;">Já tem conta? Login</a></p>
     </div>
+
     <script>
-        function salvar() {
+        function salvarRegistro() {
             const e = document.getElementById('regEmail').value;
             const s = document.getElementById('regSenha').value;
             if(e && s) {
                 localStorage.setItem('userEmail', e);
                 localStorage.setItem('userSenha', s);
-                window.location.href = "login.html";
-            }
+                alert("Conta criada!");
+                window.location.href = "login";
+            } else { alert("Preencha os campos!"); }
+        }
+
+        function handleCredentialResponse(response) {
+            const data = JSON.parse(atob(response.credential.split('.')[1]));
+            localStorage.setItem('userEmail', data.email);
+            localStorage.setItem('wzn_logado', 'true');
+            window.location.href = "painel";
         }
     </script>
     <script src="https://pl28781040.effectivegatecpm.com/e1/e5/ce/e1e5ce5c5e7479ff86c62d035abda4e5.js"></script>
