@@ -9,76 +9,58 @@
         .container { width: 100%; max-width: 400px; background: #150505; border: 2px solid #ff0000; border-radius: 15px; padding: 20px; box-shadow: 0 0 20px #ff0000; position: relative; }
         h1 { color: #ff0000; text-align: center; text-shadow: 0 0 10px #ff0000; font-size: 22px; margin-top: 30px; }
         .section-title { color: #ff0000; font-weight: bold; margin: 25px 0 15px 0; text-align: center; border-bottom: 1px dashed #ff0000; padding-bottom: 5px; font-size: 14px; }
-        
         .btn { width: 100%; padding: 12px; background: #220000; color: white; border: 1px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: block; text-decoration: none; text-align: center; box-sizing: border-box; font-size: 13px; }
         .btn:active { background: #ff0000; color: black; }
-        
-        .lang-switcher { position: absolute; top: 10px; right: 10px; background: #000; border: 1px solid #ff0000; color: white; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 11px; z-index: 10; }
-        
+        .lang-switcher { position: absolute; top: 10px; right: 10px; background: #000; border: 1px solid #ff0000; color: white; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 11px; }
         #notification-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; width: 90%; max-width: 300px; }
         .notification { background: rgba(255, 0, 0, 0.9); color: white; padding: 12px; border-radius: 8px; border: 1px solid #ff0000; text-align: center; font-weight: bold; animation: fadeInOut 3s forwards; }
         @keyframes fadeInOut { 0% { opacity: 0; transform: translateY(-20px); } 15% { opacity: 1; transform: translateY(0); } 85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-20px); } }
-        
         .rtl { direction: rtl; }
         .rtl .lang-switcher { right: auto; left: 10px; }
     </style>
 </head>
 <body>
     <div id="notification-container"></div>
-
     <div class="container" id="panel-container">
         <select class="lang-switcher" onchange="changeLang(this.value)">
             <option value="pt">PT-BR</option>
             <option value="en">English</option>
             <option value="ar">العربية</option>
         </select>
-
         <h1>WZN EXECUTOR</h1>
 
         <div class="section-title">---- INJECTOR ----</div>
         <button class="btn" onclick="soon()">GET KEY (PREMIUM) <span class="soon-txt">(EM BREVE...)</span></button>
-        <button class="btn" onclick="soon()">GET KEY (FREE) <span class="soon-txt">(EM BREVE...)</span></button>
+        <a href="https://alpharede.com/OqDqaL9nJYv" class="btn" id="btn-free">GET KEY FREE (3 ETAPAS)</a>
         
-        <div class="section-title" id="title-executors">---- EXECUTORES ROBLOX ----</div>
+        <div class="section-title" id="title-exec">---- EXECUTORES ROBLOX ----</div>
         <a href="https://www.mediafire.com/file/0iv6vdyiwi5656n/Delta-2.708.890.apk/file" target="_blank" class="btn">DELTA EXECUTOR (APK)</a>
+        <a href="https://www.mediafire.com/file/d9jo9sw5bbbol5z/Roblox.Arceus.X.NEO.2.0.6.apk/file" target="_blank" class="btn">ARCEUS X NEO (APK)</a>
 
         <div class="section-title">---- ROBLOX SCRIPTS ----</div>
-        <a href="https://alpharede.com/ZdzldVJYzoV" target="_blank" class="btn">NAME LASS (STEAL A BRAINROT)</a>
+        <a href="https://alpharede.com/ZdzldVJYzoV" target="_blank" class="btn">NAME LASS (BRAINROT)</a>
         <a href="https://alpharede.com/HrhRy9mwns1" target="_blank" class="btn">REDZ HUB (BLOX FRUITS)</a>
         <a href="https://alpharede.com/OXGZdq7EQxc" target="_blank" class="btn">REDZ HUB (MEME SEA)</a>
         <a href="https://alpharede.com/i53JSQiRIfa" target="_blank" class="btn">REDZ HUB (BLADE BALL)</a>
-        <a href="https://alpharede.com/W2o87CFBu3B" target="_blank" class="btn">REDZ HUB (PET SIMULATOR)</a>
-        <a href="https://alpharede.com/iTSlppZfNrG" target="_blank" class="btn">VOIDWARE (99 NIGHTS)</a>
-        <a href="https://alpharede.com/zRtx4f0YRPm" target="_blank" class="btn">H4X (99 NIGHTS KEY)</a>
 
         <button class="btn" style="margin-top: 20px; background: #000;" onclick="logout()">LOGOUT</button>
     </div>
-
     <script>
         const translations = {
-            pt: { soon: "(EM BREVE...)", toast: "EM BREVE...", exec: "---- EXECUTORES ROBLOX ----", rtl: false },
-            en: { soon: "(SOON...)", toast: "COMING SOON...", exec: "---- ROBLOX EXECUTORS ----", rtl: false },
-            ar: { soon: "(قريباً...)", toast: "قريباً جداً...", exec: "---- مشغلات روبلوكس ----", rtl: true }
+            pt: { soon: "(EM BREVE...)", toast: "EM BREVE...", free: "GET KEY FREE (3 ETAPAS)", exec: "---- EXECUTORES ROBLOX ----", rtl: false },
+            en: { soon: "(SOON...)", toast: "COMING SOON...", free: "GET KEY FREE (3 STEPS)", exec: "---- ROBLOX EXECUTORS ----", rtl: false },
+            ar: { soon: "(قريباً...)", toast: "قريباً جداً...", free: "الحصول على مفتاح مجاني (3 خطوات)", exec: "---- مشغلات روبلوكس ----", rtl: true }
         };
-
         let currentLang = 'pt';
-
         function changeLang(lang) {
             currentLang = lang;
             const t = translations[lang];
-            
-            // Traduz os textos "Em breve"
-            const soonElements = document.querySelectorAll('.soon-txt');
-            soonElements.forEach(el => el.innerText = t.soon);
-            
-            // Traduz o título da seção de Executores
-            document.getElementById('title-executors').innerText = t.exec;
-            
-            // Aplica Direção de Escrita (RTL)
+            document.getElementById('btn-free').innerText = t.free;
+            document.getElementById('title-exec').innerText = t.exec;
+            document.querySelectorAll('.soon-txt').forEach(el => el.innerText = t.soon);
             const container = document.getElementById('panel-container');
             t.rtl ? container.classList.add('rtl') : container.classList.remove('rtl');
         }
-
         function notify(msg) {
             const container = document.getElementById('notification-container');
             const toast = document.createElement('div');
@@ -87,19 +69,9 @@
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
-
-        function soon() {
-            notify(translations[currentLang].toast);
-        }
-
-        function logout() {
-            localStorage.removeItem('wzn_logado');
-            window.location.href = "login";
-        }
-
-        if (localStorage.getItem('wzn_logado') !== 'true') {
-            window.location.href = "login";
-        }
+        function soon() { notify(translations[currentLang].toast); }
+        function logout() { localStorage.removeItem('wzn_logado'); window.location.href = "login"; }
+        if (localStorage.getItem('wzn_logado') !== 'true') { window.location.href = "login"; }
     </script>
 </body>
 </html>
