@@ -7,14 +7,13 @@
     <style>
         body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
         .container { width: 100%; max-width: 400px; background: #150505; border: 2px solid #ff0000; border-radius: 15px; padding: 20px; box-shadow: 0 0 20px #ff0000; position: relative; }
-        h1 { color: #ff0000; text-align: center; text-shadow: 0 0 10px #ff0000; font-size: 22px; }
-        .section-title { color: #ff0000; font-weight: bold; margin: 25px 0 15px 0; text-align: center; border-bottom: 1px dashed #ff0000; padding-bottom: 5px; }
+        h1 { color: #ff0000; text-align: center; text-shadow: 0 0 10px #ff0000; font-size: 22px; margin-top: 30px; }
+        .section-title { color: #ff0000; font-weight: bold; margin: 25px 0 15px 0; text-align: center; border-bottom: 1px dashed #ff0000; padding-bottom: 5px; font-size: 14px; }
         
-        .btn { width: 100%; padding: 12px; background: #220000; color: white; border: 1px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: block; text-decoration: none; text-align: center; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background: #220000; color: white; border: 1px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px; display: block; text-decoration: none; text-align: center; box-sizing: border-box; font-size: 13px; }
         .btn:active { background: #ff0000; color: black; }
         
-        /* Seletor de Idioma */
-        .lang-switcher { position: absolute; top: 10px; right: 10px; background: #000; border: 1px solid #ff0000; color: white; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 11px; }
+        .lang-switcher { position: absolute; top: 10px; right: 10px; background: #000; border: 1px solid #ff0000; color: white; padding: 5px; border-radius: 5px; cursor: pointer; font-size: 11px; z-index: 10; }
         
         #notification-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; width: 90%; max-width: 300px; }
         .notification { background: rgba(255, 0, 0, 0.9); color: white; padding: 12px; border-radius: 8px; border: 1px solid #ff0000; text-align: center; font-weight: bold; animation: fadeInOut 3s forwards; }
@@ -34,12 +33,13 @@
             <option value="ar">العربية</option>
         </select>
 
-        <h1 id="txt-main-title">WZN EXECUTOR</h1>
+        <h1>WZN EXECUTOR</h1>
 
         <div class="section-title">---- INJECTOR ----</div>
-        <button class="btn" onclick="soon()">DELTA EXECUTOR <span class="soon-txt">(EM BREVE...)</span></button>
-        <button class="btn" onclick="soon()">WZN INJECTOR <span class="soon-txt">(EM BREVE...)</span></button>
+        <button class="btn" onclick="soon()">GET KEY (PREMIUM) <span class="soon-txt">(EM BREVE...)</span></button>
+        <button class="btn" onclick="soon()">GET KEY (FREE) <span class="soon-txt">(EM BREVE...)</span></button>
         
+        <div class="section-title" id="title-executors">---- EXECUTORES ROBLOX ----</div>
         <a href="https://www.mediafire.com/file/0iv6vdyiwi5656n/Delta-2.708.890.apk/file" target="_blank" class="btn">DELTA EXECUTOR (APK)</a>
 
         <div class="section-title">---- ROBLOX SCRIPTS ----</div>
@@ -56,9 +56,9 @@
 
     <script>
         const translations = {
-            pt: { soon: "(EM BREVE...)", toast: "EM BREVE...", rtl: false },
-            en: { soon: "(SOON...)", toast: "COMING SOON...", rtl: false },
-            ar: { soon: "(قريباً...)", toast: "قريباً جداً...", rtl: true }
+            pt: { soon: "(EM BREVE...)", toast: "EM BREVE...", exec: "---- EXECUTORES ROBLOX ----", rtl: false },
+            en: { soon: "(SOON...)", toast: "COMING SOON...", exec: "---- ROBLOX EXECUTORS ----", rtl: false },
+            ar: { soon: "(قريباً...)", toast: "قريباً جداً...", exec: "---- مشغلات روبلوكس ----", rtl: true }
         };
 
         let currentLang = 'pt';
@@ -66,10 +66,15 @@
         function changeLang(lang) {
             currentLang = lang;
             const t = translations[lang];
-            const soonElements = document.querySelectorAll('.soon-txt');
             
+            // Traduz os textos "Em breve"
+            const soonElements = document.querySelectorAll('.soon-txt');
             soonElements.forEach(el => el.innerText = t.soon);
             
+            // Traduz o título da seção de Executores
+            document.getElementById('title-executors').innerText = t.exec;
+            
+            // Aplica Direção de Escrita (RTL)
             const container = document.getElementById('panel-container');
             t.rtl ? container.classList.add('rtl') : container.classList.remove('rtl');
         }
@@ -92,7 +97,6 @@
             window.location.href = "login";
         }
 
-        // Proteção simples: se não estiver logado, volta pro login
         if (localStorage.getItem('wzn_logado') !== 'true') {
             window.location.href = "login";
         }
