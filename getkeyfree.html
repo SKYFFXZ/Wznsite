@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WZN - Get Free Key</title>
+    <style>
+        body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center; }
+        .block-card { border: 5px solid #ff0000; padding: 30px; border-radius: 20px; box-shadow: 0 0 30px #ff0000; background: #150505; max-width: 90%; }
+        h1 { color: #ff0000; text-shadow: 0 0 10px #ff0000; font-size: 28px; }
+        .key-box { margin-top: 20px; padding: 15px; background: #000; border: 1px dashed #ff0000; font-family: monospace; font-size: 1.2em; color: #00ff00; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="blocked-msg" class="block-card hidden">
+        <h1>NÃO TENTE BURLAR O SITE!<br>SUA CONTA PODE SER BLOQUEADA!</h1>
+        <p>Você precisa passar pelo encurtador para liberar sua Key.</p>
+        <button onclick="window.location.href='login'" style="background:red; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">VOLTAR</button>
+    </div>
+
+    <div id="key-content" class="block-card hidden">
+        <h1>SUA KEY FOI GERADA!</h1>
+        <p>Use esta chave no seu executor:</p>
+        <div class="key-box">WZN-FREE-9921-X88</div>
+        <p style="font-size: 0.8em; color: #666; margin-top: 20px;">Válida por 24 horas.</p>
+    </div>
+
+    <script>
+        // Sistema de Proteção contra burladores
+        window.onload = function() {
+            const referrer = document.referrer;
+            // COLOQUE O DOMÍNIO DO SEU ENCURTADOR ABAIXO (ex: alpharede.com)
+            const encurtadorValido = "alpharede.com"; 
+
+            if (referrer.includes(encurtadorValido)) {
+                // Se veio do encurtador, mostra a key
+                document.getElementById('key-content').classList.remove('hidden');
+            } else {
+                // Se tentou entrar direto, mostra o aviso de bloqueio
+                document.getElementById('blocked-msg').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
