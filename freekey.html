@@ -10,43 +10,60 @@
     
     <style>
         :root { --red-glow: #ff0000; --dark-bg: #050505; --card-bg: #0a0a0a; }
-        body { background-color: var(--dark-bg); color: white; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        body { background-color: var(--dark-bg); color: white; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
         .wzn-container { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 2px solid var(--red-glow); box-shadow: 0 0 25px rgba(255, 0, 0, 0.3); text-align: center; width: 90%; max-width: 380px; position: relative; }
-        h1 { color: var(--red-glow); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 25px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+        h1 { color: var(--red-glow); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 25px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); font-size: 22px; }
         .box { background: #000; padding: 15px; border-radius: 10px; border: 1px solid #222; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; transition: 0.3s; }
         .box:hover { border-color: var(--red-glow); }
         .label { font-size: 10px; color: #666; text-transform: uppercase; display: block; text-align: left; margin-bottom: 5px; }
         .value { font-family: monospace; font-size: 18px; font-weight: bold; }
-        #notification-container { position: fixed; top: 20px; right: 20px; z-index: 1000; }
-        .notification { background: #111; border-left: 4px solid var(--red-glow); color: white; padding: 15px 25px; margin-bottom: 10px; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); animation: slideIn 0.4s ease forwards; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .info-text { margin-top: 20px; font-size: 12px; color: #444; letter-spacing: 1px; }
+        #notification-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 90%; max-width: 300px; }
+        .notification { background: #111; border-left: 4px solid var(--red-glow); color: white; padding: 15px; margin-bottom: 10px; border-radius: 4px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-align: center; animation: slideIn 0.4s ease forwards; font-weight: bold; }
+        @keyframes slideIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .info-text { margin-top: 20px; font-size: 11px; color: #444; letter-spacing: 1px; }
+        .lang-switcher { position: absolute; top: 10px; right: 10px; background: #000; border: 1px solid var(--red-glow); color: white; padding: 4px; border-radius: 5px; cursor: pointer; font-size: 10px; }
+        .hidden { display: none !important; }
+        .rtl { direction: rtl; }
+        .rtl .lang-switcher { right: auto; left: 10px; }
+        .rtl .label { text-align: right; }
     </style>
 </head>
 <body>
 
 <div id="notification-container"></div>
 
-<div class="wzn-container">
-    <h1 id="title">KEY GERADA!</h1>
+<div id="blocked-msg" class="wzn-container hidden">
+    <h1 style="font-size: 18px;">NÃO TENTE BURLAR O SITE!</h1>
+    <p style="color: #888;">Sua conta pode ser bloqueada. Use o link oficial.</p>
+    <button onclick="window.location.href='login'" style="background:var(--red-glow); color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold;">VOLTAR</button>
+</div>
+
+<div id="key-content" class="wzn-container hidden">
+    <select class="lang-switcher" onchange="changeLang(this.value)">
+        <option value="pt">PT-BR</option>
+        <option value="en">EN</option>
+        <option value="ar">AR</option>
+    </select>
+
+    <h1 id="txt-title">KEY GERADA!</h1>
 
     <div>
-        <span class="label">User / Key</span>
+        <span class="label" id="txt-label-key">User / Key</span>
         <div class="box">
-            <span id="key-text" class="value">CARREGANDO...</span>
+            <span id="key-text" class="value">...</span>
             <i class="fa fa-copy" style="cursor:pointer; color: var(--red-glow)" onclick="copyData('key-text', 'Key')"></i>
         </div>
     </div>
 
     <div>
-        <span class="label">Password</span>
+        <span class="label" id="txt-label-pass">Password</span>
         <div class="box">
             <span id="pass-text" class="value">...</span>
             <i class="fa fa-copy" style="cursor:pointer; color: var(--red-glow)" onclick="copyData('pass-text', 'Senha')"></i>
         </div>
     </div>
 
-    <p class="info-text">VÁLIDA POR 1 HORA • VALID FOR 1 HOUR</p>
+    <p class="info-text" id="txt-info">VÁLIDA POR 1 HORA • VALID FOR 1 HOUR</p>
 </div>
 
 <script>
@@ -54,16 +71,32 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
+    const translations = {
+        pt: { title: "KEY GERADA!", key: "User / Key", pass: "Senha", info: "VÁLIDA POR 1 HORA", copy: "Copiada!", rtl: false },
+        en: { title: "KEY GENERATED!", key: "User / Key", pass: "Password", info: "VALID FOR 1 HOUR", copy: "Copied!", rtl: false },
+        ar: { title: "تم إنشاء المفتاح!", key: "المستخدم / المفتاح", pass: "كلمة المرور", info: "صالح لمدة ساعة واحدة", copy: "تم النسخ!", rtl: true }
+    };
+
+    let currentLang = 'pt';
+
+    function changeLang(lang) {
+        currentLang = lang;
+        const t = translations[lang];
+        document.getElementById('txt-title').innerText = t.title;
+        document.getElementById('txt-label-key').innerText = t.key;
+        document.getElementById('txt-label-pass').innerText = t.pass;
+        document.getElementById('txt-info').innerText = t.info;
+        const container = document.getElementById('key-content');
+        t.rtl ? container.classList.add('rtl') : container.classList.remove('rtl');
+    }
+
     function showNotify(msg) {
         const container = document.getElementById('notification-container');
         const toast = document.createElement('div');
         toast.className = 'notification';
         toast.innerText = msg;
         container.appendChild(toast);
-        setTimeout(() => { 
-            toast.style.opacity = '0'; 
-            setTimeout(() => toast.remove(), 500); 
-        }, 3000);
+        setTimeout(() => toast.remove(), 3000);
     }
 
     function generate() {
@@ -72,40 +105,35 @@
         let pass = '';
         for (let i = 0; i < 6; i++) key += chars.charAt(Math.floor(Math.random() * chars.length));
         for (let i = 0; i < 4; i++) pass += Math.floor(Math.random() * 10);
-
         const expira = Date.now() + 3600000;
 
         db.ref('usuarios/' + key).set({
-            usuario: key,
-            senha: pass,
-            expira_timestamp: expira,
-            deviceId: "",
-            dispositivos_logados: 0,
-            max_dispositivos: 1
+            usuario: key, senha: pass, expira_timestamp: expira, deviceId: "", dispositivos_logados: 0, max_dispositivos: 1
         }).then(() => {
             document.getElementById('key-text').innerText = key;
             document.getElementById('pass-text').innerText = pass;
-            showNotify("Nova Key Gerada!");
+            showNotify(translations[currentLang].title);
         });
     }
 
-    // SISTEMA DE COPIAR CORRIGIDO
     function copyData(id, type) {
         const text = document.getElementById(id).innerText;
-        
-        if (text === "CARREGANDO..." || text === "...") return;
-
-        const el = document.createElement('textarea');
-        el.value = text;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-        
-        showNotify(type + " Copiada com Sucesso!");
+        if (text === "...") return;
+        navigator.clipboard.writeText(text).then(() => {
+            showNotify(translations[currentLang].copy);
+        });
     }
 
-    generate();
+    // PROTEÇÃO DE ORIGEM
+    window.onload = function() {
+        const ref = document.referrer;
+        if (ref.includes("alpharede.com") || window.location.hostname === "localhost") {
+            document.getElementById('key-content').classList.remove('hidden');
+            generate();
+        } else {
+            document.getElementById('blocked-msg').classList.remove('hidden');
+        }
+    }
 </script>
 </body>
 </html>
