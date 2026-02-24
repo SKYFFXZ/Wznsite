@@ -1,5 +1,40 @@
-<script>
-    if (localStorage.getItem('wzn_logado') !== 'true') {
-        window.location.href = "login.html";
-    }
-</script>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>WZN DEV | Downloads</title>
+    <style>
+        :root { --primary-red: #ff0000; }
+        body { background-color: #0a0a0a; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 90%; max-width: 500px; margin-top: 50px; padding: 20px; background: #150505; border: 3px solid; border-radius: 15px; animation: rgb-border 3s linear infinite; text-align: center; }
+        @keyframes rgb-border { 0% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; } 50% { border-color: #8b0000; box-shadow: 0 0 20px #8b0000; } 100% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; } }
+        .btn { display: block; width: 100%; padding: 15px; margin: 15px 0; background: #220000; color: white; text-decoration: none; border: 2px solid var(--primary-red); border-radius: 8px; font-weight: bold; transition: 0.3s; box-sizing: border-box; }
+        .btn:hover { background: var(--primary-red); transform: scale(1.03); box-shadow: 0 0 20px var(--primary-red); }
+        .section-title { margin-top: 30px; color: #666; font-size: 0.8em; letter-spacing: 2px; border-bottom: 1px solid #330000; padding-bottom: 5px; }
+        .footer-info { margin-top: 50px; padding: 30px; color: #555; font-size: 0.85em; text-align: center; max-width: 600px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 style="color: var(--primary-red);">WZN DEV</h1>
+        <p style="letter-spacing: 4px;">- - INJECTOR - -</p>
+
+        <a href="https://wa.me/77981259046" target="_blank" class="btn" style="border-color: #ffd700;">GET KEY (PREMIUM)</a>
+        <a href="#" class="btn">GET KEY (FREE)</a>
+
+        <div class="section-title">- - ROBLOX SCRIPTS - -</div>
+        <a href="#" class="btn">DELTA EXECUTOR</a>
+
+        <div class="section-title">- - MOD MENU FREE FIRE - -</div>
+        <a href="#" class="btn">WZN TEAM V1</a>
+    </div>
+
+    <div class="footer-info">
+        <h3>ESTABILIDADE DO SISTEMA</h3>
+        <p>Nossos servidores operam com 99.9% de Uptime. A estabilidade de injeção é testada a cada atualização de jogo para evitar banimentos e crashes. Ao notar instabilidade, limpe o cache do seu navegador ou do injector.</p>
+        <p>A segurança dos seus dados é prioridade. Conexões criptografadas protegem sua navegação.</p>
+    </div>
+
+</body>
+</html>
