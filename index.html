@@ -1,14 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head><meta charset="UTF-8"><title>WZN DEV | Loading...</title></head>
+<head>
+    <meta charset="UTF-8">
+    <title>WZN DEV</title>
+</head>
 <body style="background: #0a0a0a;">
     <script>
         const registrado = localStorage.getItem('userEmail');
         const logado = localStorage.getItem('wzn_logado');
-        if (!registrado) { window.location.href = "registro.html"; }
-        else if (logado !== 'true') { window.location.href = "login.html"; }
-        else { window.location.href = "painel.html"; }
+
+        // Se não tem e-mail salvo, manda para o arquivo REGISTRO.HTML
+        if (!registrado) { 
+            window.location.href = "registro.html"; 
+        } 
+        // Se tem registro mas não logou, manda para LOGIN.HTML
+        else if (logado !== 'true') { 
+            window.location.href = "login.html"; 
+        } 
+        // Se está tudo ok, manda para o PAINEL.HTML
+        else { 
+            window.location.href = "painel.html"; 
+        }
     </script>
+
     <script src="https://pl28781040.effectivegatecpm.com/e1/e5/ce/e1e5ce5c5e7479ff86c62d035abda4e5.js"></script>
 </body>
 </html>
