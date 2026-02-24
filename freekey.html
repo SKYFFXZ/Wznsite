@@ -16,15 +16,11 @@
         .box:hover { border-color: var(--red-glow); }
         .label { font-size: 10px; color: #666; text-transform: uppercase; display: block; text-align: left; margin-bottom: 5px; }
         .value { font-family: monospace; font-size: 18px; font-weight: bold; }
-        .lang-switcher { position: absolute; top: 10px; right: 10px; background: #000; border: 1px solid var(--red-glow); color: white; padding: 4px; border-radius: 5px; cursor: pointer; font-size: 10px; z-index: 10; }
         .hidden { display: none !important; }
-        .rtl { direction: rtl; }
-        .rtl .lang-switcher { right: auto; left: 10px; }
-        .rtl .label { text-align: right; }
         #notification-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 90%; max-width: 300px; }
         .notification { background: #111; border-left: 4px solid var(--red-glow); color: white; padding: 15px; margin-bottom: 10px; border-radius: 4px; text-align: center; animation: slideIn 0.4s ease forwards; font-weight: bold; }
         @keyframes slideIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .btn-back { background: var(--red-glow); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px; text-transform: uppercase; }
+        .btn-back { background: var(--red-glow); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 20px; text-transform: uppercase; width: 100%; }
     </style>
 </head>
 <body>
@@ -32,65 +28,34 @@
 <div id="notification-container"></div>
 
 <div id="blocked-msg" class="wzn-container hidden">
-    <h1 style="font-size: 18px;">NÃO TENTE BURLAR O SITE!</h1>
-    <p style="color: #888;">Use o link oficial do encurtador para gerar sua key corretamente.</p>
-    <button class="btn-back" onclick="window.location.href='painel'">VOLTAR</button>
+    <h1 style="font-size: 18px;">ACESSO NEGADO!</h1>
+    <p style="color: #888;">Você tentou acessar diretamente ou seu link expirou.</p>
+    <button class="btn-back" onclick="window.location.href='painel'">PEGAR KEY NO PAINEL</button>
 </div>
 
 <div id="key-content" class="wzn-container hidden">
-    <select class="lang-switcher" onchange="changeLang(this.value)">
-        <option value="pt">PT-BR</option>
-        <option value="en">EN</option>
-        <option value="ar">AR</option>
-    </select>
-
-    <h1 id="txt-title">KEY GERADA!</h1>
-
+    <h1>KEY GERADA!</h1>
     <div>
-        <span class="label" id="txt-label-key">User / Key</span>
+        <span class="label">User / Key</span>
         <div class="box">
             <span id="key-text" class="value">...</span>
             <i class="fa fa-copy" style="cursor:pointer; color: var(--red-glow)" onclick="copyData('key-text')"></i>
         </div>
     </div>
-
     <div>
-        <span class="label" id="txt-label-pass">Password</span>
+        <span class="label">Password</span>
         <div class="box">
             <span id="pass-text" class="value">...</span>
             <i class="fa fa-copy" style="cursor:pointer; color: var(--red-glow)" onclick="copyData('pass-text')"></i>
         </div>
     </div>
-
-    <p style="font-size: 11px; color: #444;" id="txt-info">VÁLIDA POR 1 HORA • VALID FOR 1 HOUR</p>
+    <p style="font-size: 11px; color: #444;">VÁLIDA POR 1 HORA • VALID FOR 1 HOUR</p>
 </div>
 
 <script>
-    // CONFIGURAÇÃO FIREBASE
     const firebaseConfig = { databaseURL: "https://wzn-getkey-default-rtdb.firebaseio.com/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-
-    // TRADUÇÕES
-    const translations = {
-        pt: { title: "KEY GERADA!", key: "User / Key", pass: "Senha", info: "VÁLIDA POR 1 HORA", copy: "Copiada com Sucesso!", rtl: false },
-        en: { title: "KEY GENERATED!", key: "User / Key", pass: "Password", info: "VALID FOR 1 HOUR", copy: "Copied Successfully!", rtl: false },
-        ar: { title: "تم إنشاء المفتاح!", key: "المستخدم / المفتاح", pass: "كلمة المرور", info: "صالح لمدة ساعة واحدة", copy: "تم النسخ بنجاح!", rtl: true }
-    };
-
-    let currentLang = 'pt';
-
-    function changeLang(lang) {
-        currentLang = lang;
-        const t = translations[lang];
-        document.getElementById('txt-title').innerText = t.title;
-        document.getElementById('txt-label-key').innerText = t.key;
-        document.getElementById('txt-label-pass').innerText = t.pass;
-        document.getElementById('txt-info').innerText = t.info;
-        
-        const container = document.getElementById('key-content');
-        t.rtl ? container.classList.add('rtl') : container.classList.remove('rtl');
-    }
 
     function showNotify(msg) {
         const container = document.getElementById('notification-container');
@@ -101,46 +66,35 @@
         setTimeout(() => toast.remove(), 3000);
     }
 
-    // GERAÇÃO DA KEY NO FIREBASE
     function generate() {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let key = 'WZN-';
-        let pass = '';
+        let key = 'WZN-'; let pass = '';
         for (let i = 0; i < 6; i++) key += chars.charAt(Math.floor(Math.random() * chars.length));
         for (let i = 0; i < 4; i++) pass += Math.floor(Math.random() * 10);
         
-        const expira = Date.now() + 3600000;
-
-        db.ref('usuarios/' + key).set({
-            usuario: key,
-            senha: pass,
-            expira_timestamp: expira,
-            deviceId: "",
-            dispositivos_logados: 0,
-            max_dispositivos: 1
+        db.ref('usuarios/' + key).set({ 
+            usuario: key, 
+            senha: pass, 
+            expira_timestamp: Date.now() + 3600000, 
+            deviceId: "", 
+            dispositivos_logados: 0, 
+            max_dispositivos: 1 
         }).then(() => {
             document.getElementById('key-text').innerText = key;
             document.getElementById('pass-text').innerText = pass;
         });
     }
 
-    // SISTEMA DE CÓPIA
     function copyData(id) {
         const text = document.getElementById(id).innerText;
         if (text === "...") return;
-        
-        navigator.clipboard.writeText(text).then(() => {
-            showNotify(translations[currentLang].copy);
-        });
+        navigator.clipboard.writeText(text).then(() => showNotify("Copiado com Sucesso!"));
     }
 
-    // PROTEÇÃO DE ACESSO (ENCURTADOR)
+    // LÓGICA DE VERIFICAÇÃO POR PARÂMETRO NA URL
     window.onload = function() {
-        const ref = document.referrer;
-        
-        // Permite se vier do encurtador ou se estiver em localhost (teste)
-        // Se o ref estiver vazio, também permitimos para evitar falsos positivos de navegadores mobile
-        if (ref.includes("alpharede.com") || ref === "" || window.location.hostname === "localhost") {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'done') {
             document.getElementById('key-content').classList.remove('hidden');
             generate();
         } else {
