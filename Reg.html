@@ -7,27 +7,27 @@
     <style>
         body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .container { width: 320px; padding: 25px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center; box-shadow: 0 0 15px #ff0000; }
+        h1 { color: #ff0000; margin-bottom: 20px; }
         input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; }
         .btn { width: 100%; padding: 14px; background: #220000; color: white; border: 2px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: #ff0000;">WZN REGISTRO</h1>
-        <input type="text" id="regNome" placeholder="Seu Nome">
+        <h1>WZN REGISTRO</h1>
         <input type="email" id="regEmail" placeholder="E-mail">
         <input type="password" id="regSenha" placeholder="Senha">
-        <button class="btn" onclick="salvarRegistro()">REGISTRAR</button>
+        <button class="btn" onclick="salvar()">REGISTRAR</button>
         <p><a href="login.html" style="color: #666; text-decoration: none; font-size: 0.8em;">Já tem conta? Login</a></p>
     </div>
     <script>
-        function salvarRegistro() {
+        function salvar() {
             const e = document.getElementById('regEmail').value;
             const s = document.getElementById('regSenha').value;
-            if(e && s) { 
-                localStorage.setItem('userEmail', e); 
-                localStorage.setItem('userSenha', s); 
-                window.location.href = "login.html"; 
+            if(e && s) {
+                localStorage.setItem('userEmail', e);
+                localStorage.setItem('userSenha', s);
+                window.location.href = "login.html";
             }
         }
     </script>
