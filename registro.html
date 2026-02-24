@@ -6,15 +6,20 @@
     <title>WZN DEV - Registro</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { width: 320px; padding: 25px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center; box-shadow: 0 0 15px #ff0000; }
-        h1 { color: #ff0000; text-shadow: 0 0 10px #ff0000; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; outline: none; }
+        body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .container { width: 320px; padding: 25px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center; box-shadow: 0 0 15px #ff0000; position: relative; }
+        h1 { color: #ff0000; text-shadow: 0 0 10px #ff0000; margin-bottom: 20px; font-size: 24px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #000; border: 1px solid #ff0000; color: white; border-radius: 5px; box-sizing: border-box; outline: none; display: block; }
         .btn { width: 100%; padding: 14px; background: #220000; color: white; border: 2px solid #ff0000; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .google-btn { margin-top: 15px; display: flex; justify-content: center; }
+        
+        /* Notificação Toast */
+        #notification-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; width: 90%; max-width: 300px; }
+        .notification { background: rgba(255, 0, 0, 0.9); color: white; padding: 12px; border-radius: 8px; border: 1px solid #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); margin-bottom: 10px; text-align: center; font-weight: bold; animation: fadeInOut 3s forwards; }
+        @keyframes fadeInOut { 0% { opacity: 0; transform: translateY(-20px); } 15% { opacity: 1; transform: translateY(0); } 85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-20px); } }
     </style>
 </head>
 <body>
+    <div id="notification-container"></div>
     <div class="container">
         <h1>WZN REGISTRO</h1>
         <input type="text" id="regNome" placeholder="Seu Nome">
@@ -22,31 +27,39 @@
         <input type="password" id="regSenha" placeholder="Senha">
         <button class="btn" onclick="salvarRegistro()">CRIAR CONTA</button>
 
-        <div class="google-btn">
-            <div id="g_id_onload" data-client_id="SEU_ID_GOOGLE.apps.googleusercontent.com" data-callback="handleCredentialResponse"></div>
+        <div style="margin-top: 15px; display: flex; justify-content: center;">
+            <div id="g_id_onload" data-client_id="SEU_ID_GOOGLE_AQUI" data-callback="handleCredentialResponse"></div>
             <div class="g_id_signin" data-type="standard"></div>
         </div>
 
-        <p style="margin-top: 15px; font-size: 0.8em;"><a href="login" style="color: #666; text-decoration: none;">Já tem conta? Login</a></p>
+        <p style="margin-top: 15px; font-size: 0.8em;"><a href="login" style="color: #666; text-decoration: none;">Já tem conta? Voltar</a></p>
     </div>
 
     <script>
+        function notify(msg) {
+            const container = document.getElementById('notification-container');
+            const toast = document.createElement('div');
+            toast.className = 'notification';
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
         function salvarRegistro() {
             const e = document.getElementById('regEmail').value;
             const s = document.getElementById('regSenha').value;
             if(e && s) {
                 localStorage.setItem('userEmail', e);
                 localStorage.setItem('userSenha', s);
-                alert("Conta criada!");
-                window.location.href = "login";
-            } else { alert("Preencha os campos!"); }
+                notify("Conta criada com sucesso!");
+                setTimeout(() => window.location.href = "login", 2000);
+            } else { notify("Preencha todos os campos!"); }
         }
 
         function handleCredentialResponse(response) {
-            const data = JSON.parse(atob(response.credential.split('.')[1]));
-            localStorage.setItem('userEmail', data.email);
+            notify("Registrado com Google!");
             localStorage.setItem('wzn_logado', 'true');
-            window.location.href = "painel";
+            setTimeout(() => window.location.href = "painel", 2000);
         }
     </script>
     <script src="https://pl28781040.effectivegatecpm.com/e1/e5/ce/e1e5ce5c5e7479ff86c62d035abda4e5.js"></script>
