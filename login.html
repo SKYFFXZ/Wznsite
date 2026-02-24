@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>WZN DEV - Login</title>
+    <style>/* Use o mesmo estilo do register.html */</style>
+</head>
+<body style="background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div class="container" style="width: 320px; padding: 30px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center;">
+        <h1 style="color: #ff0000;">LOGIN</h1>
+        <input type="email" id="lEmail" placeholder="E-mail" style="width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #ff0000; color: white;">
+        <input type="password" id="lSenha" placeholder="Senha" style="width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #ff0000; color: white;">
+        <button class="btn" onclick="logar()" style="width: 100%; padding: 12px; background: #220000; color: white; border: 2px solid #ff0000;">ENTRAR</button>
+        
+        <p style="font-size: 0.8em; margin-top: 20px;">
+            Não tem conta? <a href="register.html" style="color: #ff0000;">Registre-se</a>
+        </p>
+    </div>
+
+    <script>
+        function logar() {
+            const e = document.getElementById('lEmail').value;
+            const s = document.getElementById('lSenha').value;
+            if(e === localStorage.getItem('userEmail') && s === localStorage.getItem('userSenha')) {
+                localStorage.setItem('wzn_logado', 'true');
+                window.location.href = "painel.html";
+            } else {
+                alert("Dados incorretos!");
+            }
+        }
+    </script>
+</body>
+</html>

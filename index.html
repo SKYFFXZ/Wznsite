@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head><meta charset="UTF-8"><title>WZN DEV</title></head>
+<body style="background:#0a0a0a">
+    <script>
+        const registrado = localStorage.getItem('wzn_registrado');
+        const logado = localStorage.getItem('wzn_logado');
+        if (!registrado) { window.location.href = "register.html"; }
+        else if (!logado) { window.location.href = "login.html"; }
+        else { window.location.href = "painel.html"; }
+    </script>
+</body>
+</html>
+
+<div style="text-align: right; margin-bottom: 10px;">
+    <button onclick="mudarIdioma('pt')" style="background:none; border:1px solid #ff0000; color:white; cursor:pointer;">PT</button>
+    <button onclick="mudarIdioma('en')" style="background:none; border:1px solid #ff0000; color:white; cursor:pointer;">EN</button>
+</div>
