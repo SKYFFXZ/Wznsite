@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>WZN DEV - Login</title>
-    <style>/* Use o mesmo estilo do register.html */</style>
+    <style> /* Use o mesmo CSS do register.html */ </style>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
-<body style="background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div class="container" style="width: 320px; padding: 30px; background: #150505; border: 3px solid #ff0000; border-radius: 15px; text-align: center;">
-        <h1 style="color: #ff0000;">LOGIN</h1>
-        <input type="email" id="lEmail" placeholder="E-mail" style="width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #ff0000; color: white;">
-        <input type="password" id="lSenha" placeholder="Senha" style="width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #ff0000; color: white;">
-        <button class="btn" onclick="logar()" style="width: 100%; padding: 12px; background: #220000; color: white; border: 2px solid #ff0000;">ENTRAR</button>
+<body>
+    <div class="container">
+        <h1 id="txt-titulo" style="color: #ff0000;">WZN LOGIN</h1>
+        <input type="email" id="logEmail" placeholder="E-mail">
+        <input type="password" id="logSenha" placeholder="Senha">
         
-        <p style="font-size: 0.8em; margin-top: 20px;">
-            Não tem conta? <a href="register.html" style="color: #ff0000;">Registre-se</a>
-        </p>
+        <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA"></div>
+
+        <button class="btn" id="txt-btn" onclick="verificarLogin()">ENTRAR</button>
+        
+        <p><a href="register.html" style="color: #ff0000; text-decoration: none; font-size: 0.8em;">Não tem conta? Registre-se</a></p>
     </div>
 
     <script>
-        function logar() {
-            const e = document.getElementById('lEmail').value;
-            const s = document.getElementById('lSenha').value;
+        function verificarLogin() {
+            const e = document.getElementById('logEmail').value;
+            const s = document.getElementById('logSenha').value;
             if(e === localStorage.getItem('userEmail') && s === localStorage.getItem('userSenha')) {
                 localStorage.setItem('wzn_logado', 'true');
                 window.location.href = "painel.html";
             } else {
-                alert("Dados incorretos!");
+                alert("Erro no login!");
             }
         }
     </script>
